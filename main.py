@@ -15,13 +15,14 @@ def send_order(symbol, side, size):
     data_str = urlencode(data)
     authent = sign_request(data_str, nonce)
 
-    headers = {
+        headers = {
         "APIKey": API_KEY,
         "Authent": authent,
         "Content-Type": "application/x-www-form-urlencoded"
     }
-logging.info(f"Headers enviados: {headers}")
-logging.info(f"Body enviado: {data_str}")
+
+    logging.info(f"Headers enviados: {headers}")
+    logging.info(f"Body enviado: {data_str}")
 
     response = requests.post(
         "https://futures.kraken.com/derivatives/api/v3/sendorder",
@@ -29,8 +30,6 @@ logging.info(f"Body enviado: {data_str}")
         data=data_str
     )
 
-    logging.info(f"Nonce: {nonce}")
-    logging.info(f"Data string firmada: {data_str}")
-    logging.info(f"Firma generada: {authent}")
-    logging.info(f"Respuesta completa de Kraken: {response.text}")
+    logging.info(f"Respuesta Kraken: {response.text}")
     return response.json()
+
