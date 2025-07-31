@@ -19,9 +19,19 @@ def sign_request(data_str, nonce):
 
 @app.route('/webhook', methods=['POST'])
 def webhook():
-    print("Se activó el endpoint /webhook")  # 👈 Nueva línea
-    payload = request.get_json(force=True)   # 👈 Cambiado con force=True
-    print("Alerta recibida:", payload)       # 👈 Mantenido
+    print("Se activó el endpoint /webhook")  # log de activación
+
+    try:
+        payload = request.get_json(force=True)
+        if payload:
+            print("Alerta recibida:", payload)
+        else:
+            print("⚠️ El payload está vacío o mal formado")
+    except Exception as e:
+        print("❌ Error al procesar el JSON:", e)
+
+    return jsonify({"status": "ok"})
+
 
 
     side = payload.get("action")  # "buy" o "sell"
