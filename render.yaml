@@ -1,0 +1,11 @@
+services:
+  - type: web
+    name: kraken-bot
+    env: python
+    buildCommand: ""
+    startCommand: "python main.py"
+    envVars:
+      - key: KRAKEN_API_KEY
+        sync: false
+      - key: KRAKEN_API_SECRET
+        sync: false
