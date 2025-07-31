@@ -12,12 +12,12 @@ from collections import OrderedDict
 # Configurar logging
 logging.basicConfig(level=logging.INFO)
 
+# Cargar claves desde entorno
 API_KEY = os.getenv("KRAKEN_API_KEY")
 API_SECRET = os.getenv("KRAKEN_API_SECRET")
 
-# ✅ Log temporal para verificar longitud del secret cargado
+# Log de verificación
 logging.info(f"API_SECRET length: {len(API_SECRET)} caracteres")
-
 
 def sign_request(data_str, nonce):
     message = nonce + data_str
@@ -28,7 +28,6 @@ def sign_request(data_str, nonce):
 def send_order(symbol, side, size):
     nonce = str(int(time.time() * 1000))
 
-    # Ordenar los datos explícitamente
     data = OrderedDict([
         ("orderType", "mkt"),
         ("side", side),
@@ -47,18 +46,19 @@ def send_order(symbol, side, size):
     }
 
     logging.info(f"Headers enviados: {headers}")
-    logging.info(f"Body enviado: {data_str}")
+    logging.info(f"Body enviado (raw): {data_str}")
 
+    # Enviar como bytes crudos (no recodificado)
     response = requests.post(
         "https://futures.kraken.com/derivatives/api/v3/sendorder",
         headers=headers,
-        data=data_str
+        data=data_str.encode("utf-8")
     )
 
     logging.info(f"Respuesta completa de Kraken: {response.text}")
     return response.json()
 
-# Iniciar la app Flask
+# Configurar Flask
 app = Flask(__name__)
 
 @app.route("/webhook", methods=["POST"])
