@@ -1,3 +1,6 @@
+import logging
+logging.basicConfig(level=logging.INFO)
+
 from flask import Flask, request, jsonify
 import os
 import time
@@ -19,20 +22,18 @@ def sign_request(data_str, nonce):
 
 @app.route('/webhook', methods=['POST'])
 def webhook():
-    print("Se activó el endpoint /webhook")  # log de activación
+    logging.info("Se activó el endpoint /webhook")
 
     try:
         payload = request.get_json(force=True)
         if payload:
-            print("Alerta recibida:", payload)
+            logging.info(f"Alerta recibida: {payload}")
         else:
-            print("⚠️ El payload está vacío o mal formado")
+            logging.warning("⚠️ El payload está vacío o mal formado")
     except Exception as e:
-        print("❌ Error al procesar el JSON:", e)
+        logging.error(f"❌ Error al procesar el JSON: {e}")
 
     return jsonify({"status": "ok"})
-
-
 
     side = payload.get("action")  # "buy" o "sell"
     size = str(payload.get("size", 1))
