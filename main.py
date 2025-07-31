@@ -19,8 +19,10 @@ def sign_request(data_str, nonce):
 
 @app.route('/webhook', methods=['POST'])
 def webhook():
-    payload = request.get_json()
-    print("Alerta recibida:", payload)
+    print("Se activó el endpoint /webhook")  # 👈 Nueva línea
+    payload = request.get_json(force=True)   # 👈 Cambiado con force=True
+    print("Alerta recibida:", payload)       # 👈 Mantenido
+
 
     side = payload.get("action")  # "buy" o "sell"
     size = str(payload.get("size", 1))
