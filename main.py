@@ -12,9 +12,12 @@ from collections import OrderedDict
 # Configurar logging
 logging.basicConfig(level=logging.INFO)
 
-# Cargar claves desde variables de entorno
 API_KEY = os.getenv("KRAKEN_API_KEY")
 API_SECRET = os.getenv("KRAKEN_API_SECRET")
+
+# ✅ Log temporal para verificar longitud del secret cargado
+logging.info(f"API_SECRET length: {len(API_SECRET)} caracteres")
+
 
 def sign_request(data_str, nonce):
     message = nonce + data_str
