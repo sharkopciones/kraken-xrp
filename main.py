@@ -20,6 +20,8 @@ def send_order(symbol, side, size):
         "Authent": authent,
         "Content-Type": "application/x-www-form-urlencoded"
     }
+logging.info(f"Headers enviados: {headers}")
+logging.info(f"Body enviado: {data_str}")
 
     response = requests.post(
         "https://futures.kraken.com/derivatives/api/v3/sendorder",
